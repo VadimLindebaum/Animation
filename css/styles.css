@@ -1,0 +1,156 @@
+:root{
+  --accent: #4f46e5;
+  --bg: #f7f7fb;
+  --text: #111827;
+  --duration: 450ms;
+}
+
+/* Ligipääsetavus: vähenda animatsioone, kui kasutaja eelistab */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Põhistiilid */
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: var(--text);
+  background: var(--bg);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* NAV: mikro-interaction (underline grow) */
+.nav-list {
+  display:flex;
+  gap: 1rem;
+  list-style: none;
+  margin:0;
+  padding:0;
+}
+.nav-list a {
+  position: relative;
+  text-decoration:none;
+  color: inherit;
+  padding: .25rem 0;
+}
+.nav-list a::after{
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:-2px;
+  height:3px;
+  background:var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--duration) cubic-bezier(.22,1,.36,1);
+}
+.nav-list a:hover::after,
+.nav-list a:focus::after{
+  transform: scaleX(1);
+}
+
+/* HERO: tekst sisse-sisseronimine (keyframes) */
+.hero{
+  display:flex;
+  gap:2rem;
+  align-items:center;
+  padding:4rem;
+}
+.hero-title{
+  font-size:2.5rem;
+  margin:0;
+  opacity:0;
+  transform: translateY(20px);
+  animation: enterUp 700ms cubic-bezier(.2,.9,.3,1) forwards;
+}
+.hero-title span { color: var(--accent); }
+
+/* alamteksti hilisem viivitus */
+.hero-sub{
+  margin-top:.75rem;
+  opacity:0;
+  transform: translateY(12px);
+  animation: enterUp 700ms cubic-bezier(.2,.9,.3,1) forwards;
+  animation-delay: 150ms;
+}
+
+/* CTA nupp — hover transition ja pulse režiim */
+.cta{
+  display:inline-block;
+  margin-top:1rem;
+  background:var(--accent);
+  color:white;
+  padding:.6rem 1rem;
+  border-radius:8px;
+  text-decoration:none;
+  transition: transform var(--duration) ease, box-shadow var(--duration) ease;
+}
+.cta:hover{
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(79,70,229,0.15);
+}
+
+/* Pulsing CTA (korduv) */
+.cta:active { transform: scale(.98); }
+
+/* Kaardid — staggered entrance ja hover lift */
+.cards {
+  display:flex;
+  gap:1rem;
+  padding:2rem;
+}
+.card{
+  background:white;
+  padding:1.25rem;
+  border-radius:12px;
+  flex:1;
+  box-shadow: 0 6px 18px rgba(17,24,39,0.06);
+  transform: translateY(20px);
+  opacity:0;
+  animation: cardEnter 600ms cubic-bezier(.22,1,.36,1) forwards;
+}
+/* Stagger kasutades nth-child */
+.card:nth-child(1){ animation-delay: 0ms; }
+.card:nth-child(2){ animation-delay: 120ms; }
+.card:nth-child(3){ animation-delay: 240ms; }
+
+.card:hover{
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(17,24,39,0.12);
+  transition: transform 300ms ease, box-shadow 300ms ease;
+}
+
+/* Image hover filter effect */
+.hero-image{
+  width:320px;
+  border-radius:12px;
+  object-fit:cover;
+  filter: grayscale(60%) contrast(.95);
+  transition: filter 550ms ease, transform 550ms ease;
+}
+.hero-image:hover{
+  filter: grayscale(0%) contrast(1);
+  transform: scale(1.03);
+}
+
+/* KEYFRAMES */
+@keyframes enterUp {
+  to { opacity:1; transform: translateY(0); }
+}
+@keyframes cardEnter {
+  to { opacity:1; transform: translateY(0); }
+}
+
+/* Väike loader näide (nähtamatu vaikimisi) */
+.loader {
+  width:36px; height:36px; border-radius:50%;
+  border:4px solid rgba(0,0,0,0.08);
+  border-top-color: var(--accent);
+  animation: spin 900ms linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Väike viimistlus */
+.site-header { padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center; }
